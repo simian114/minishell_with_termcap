@@ -6,7 +6,7 @@
 /*   By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:29:52 by gmoon             #+#    #+#             */
-/*   Updated: 2020/06/06 00:41:14 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/06 01:35:53 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,12 @@ void			sh_ls(int fd);
 void			sh_pwd(char **args, int fd);
 void			sh_unset(char **args, t_list *envs);
 int				sh_exit(char **cmd);
+
+/*
+** init_shell.c
+*/
+void	init_shell(int argc, char **argv, char **envp, t_list **envs);
+
 /*
 ** check redirection.c
 */

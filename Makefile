@@ -6,7 +6,7 @@
 #    By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/11 21:00:54 by gmoon             #+#    #+#              #
-#    Updated: 2020/06/06 00:43:00 by sanam            ###   ########.fr        #
+#    Updated: 2020/06/06 01:36:12 by sanam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ INCDIR = ./inc
 OBJDIR = ./obj
 
 SRC =	check_redirection.c	\
+		init_shell.c		\
 		cmd_switch.c		\
 		convert_arg.c		\
 		exec_line.c			\
