@@ -1,4 +1,4 @@
-# minishell_with_termcap
+# :pineapple:***minishell_with_termcap***
 ***minishell by [gmoon](https://github.com/moon9ua) and termcap by [sanam](https://github.com/simian114).***<br>
 ***@ 42 Seoul***
 
