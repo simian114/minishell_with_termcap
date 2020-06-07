@@ -1,5 +1,5 @@
 # minishell_with_termcap
-
+***minishell by [gmoon](https://github.com/moon9ua) and termcap by [sanam](https://github.com/simian114).***<br>
 -----
 ### bash 쉘 처럼 다양한 키보드 입력 받을 수 있게 minishell 수정 중...
 
