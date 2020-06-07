@@ -6,7 +6,7 @@
 /*   By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/27 20:52:28 by gmoon             #+#    #+#             */
-/*   Updated: 2020/06/06 00:33:48 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/07 22:27:36 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,34 +53,36 @@ typedef struct		s_dlist
 	struct s_dlist	*prev;
 }					t_dlist;
 
-typedef struct				s_term
+typedef struct		s_term
 {
-	struct termios			term;
-	struct winsize			window_size;
-	char					*name;
-	size_t					width;
-	size_t					height;
+	struct termios	term;
+	struct winsize	window_size;
+	char			*name;
+	size_t			width;
+	size_t			height;
+}					t_term;
 
-}						t_term;
-
-typedef struct			s_line
+typedef struct		s_line
 {
-	char				buf[6];
-	char				*line;
-	size_t				line_size;
-	char				*prompt;
-	size_t				prompt_size;
-	size_t				cursor_pos;
-	size_t				cursor[2];
-	t_term				*config;
+	char			buf[6];
+	char			*line;
+	size_t			line_size;
+	char			*prompt;
+	size_t			prompt_size;
+	size_t			cursor_pos;
+	size_t			cursor[2];
+	t_term			*config;
+	int				sigint_count;
+}					t_line;
 
-}						t_line;
+t_line				g_data;
 
 /*
 ** util.c
 */
 int					ft_putchar(int c);
 void				ft_tputs(char *cmd);
+void				sigint_getline(int signo);
 
 /*
 ** 1.get_line.c
@@ -95,6 +97,7 @@ void				my_tputs(char *cmd);
 int					init_terminal(t_term *config, t_line *data, char *prompt);
 void				get_window_size(t_term *config);
 void				init_line(t_line *data, char *prompt);
+void				restore_term(void);
 
 /*
 ** 3.init_cursor.c

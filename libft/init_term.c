@@ -6,7 +6,7 @@
 /*   By: sanam <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/27 12:30:59 by sanam             #+#    #+#             */
-/*   Updated: 2020/06/06 00:36:40 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/07 22:27:07 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,23 @@ void	init_line(t_line *data, char *prompt)
 	data->prompt_size = ft_strlen(prompt);
 	data->line_size = data->prompt_size;
 	data->cursor_pos = data->prompt_size;
+	if (data->sigint_count == 1)
+	{
+		data->sigint_count = 0;
+		return ;
+	}
+	ft_putstr_fd("\033[36m\033[3m\033[01m", 1);
 	ft_putstr_fd(prompt, 1);
+	ft_putstr_fd("\033[0m", 1);
+}
+
+void	restore_term(void)
+{
+	struct termios	change;
+
+	tgetent(NULL, getenv("TERM"));
+	tcgetattr(0, &change);
+	change.c_lflag |= ICANON;
+	change.c_lflag |= ECHO;
+	tcsetattr(0, TCSANOW, &change);
 }

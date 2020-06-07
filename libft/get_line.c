@@ -6,7 +6,7 @@
 /*   By: sanam <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/26 15:46:25 by sanam             #+#    #+#             */
-/*   Updated: 2020/06/06 00:45:17 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/07 22:27:01 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	parse_input(t_line *data, t_dlist **history, t_dlist **temp)
 {
 	if (data->buf[0] == 4)
 	{
+		data->buf[0] = -1;
 		if (ft_strlen(data->line) == data->prompt_size)
 			exit(0);
 	}
@@ -38,22 +39,26 @@ void	parse_input(t_line *data, t_dlist **history, t_dlist **temp)
 char	*get_line_term(char *prompt, t_dlist **history)
 {
 	t_term			config;
-	t_line			data;
 	char			*ret;
 	t_dlist			*temp;
 
+	ft_memset(&g_data, 0, sizeof(t_line));
+	g_data.sigint_count = 0;
+	signal(SIGINT, sigint_getline);
+	signal(SIGQUIT, SIG_IGN);
 	temp = *history;
-	init_terminal(&config, &data, prompt);
-	while ((read(0, &data.buf, 6)) && data.buf[0] != RET)
+	init_terminal(&config, &g_data, prompt);
+	while ((read(0, &g_data.buf, 6)) && g_data.buf[0] != RET)
 	{
-		init_cursor(&config, &data);
-		parse_input(&data, history, &temp);
+		init_cursor(&config, &g_data);
+		parse_input(&g_data, history, &temp);
 	}
 	ft_putendl_fd("", 1);
-	ret = ft_strdup(&data.line[data.prompt_size]);
-	free(data.line);
+	ret = ft_strdup(&g_data.line[g_data.prompt_size]);
+	free(g_data.line);
 	if (ft_strlen(ret) > 0)
 		ft_dlstadd_front(history, ft_dlstnew(ft_strdup(ret)));
+	restore_term();
 	return (ret);
 }
 
