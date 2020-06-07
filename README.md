@@ -35,16 +35,18 @@
 
 -----
 ### :heavy_exclamation_mark: termcap과 get_line
-- 터미널의 설정 바꿨으면 함수가 끝날 때 원상복구 시켜주자.
+- get_line 함수를 만들 때 가장 먼저 해야하는건 현재 터미널의 width를 구하는 것. icotl 라이브러리와 함수를 이용하면 된다.  
+
+- 터미널의 설정 바꿨으면 함수가 끝날 때 원상복구 시켜주자.  
 
 - 기존의 터미널은 Canonical 입력 상태. 이 상태일 때 read(0, buf, 1000) 이런 함수가 있으면 EOF가 되거나 1000개의 입력을 받으면
 read가 끝난다. 그리고 입력이 끝나면 그제서야 buf에 입력이 시작된다. minishell에서 화살표 등의 다른 키가 먹히지 않는 이유가 이거 때문인듯.
-따라서 하나의 입력이 들어올 때 마다 바로 read가 종료되고 그 다음 작업을 진행할 수 있도록 Canonical 설정을 꺼주자.
+따라서 하나의 입력이 들어올 때 마다 바로 read가 종료되고 그 다음 작업을 진행할 수 있도록 Canonical 설정을 꺼주자.  
 
 - termcap으로 입력을 받는 함수를 만들 때, 눈에 보이는 커서의 위치와 실제 메모리 상의 커서 위치가 다를 수 있다.
-그럼 바로.. 끔찍한 일 발생. 따라서 커서의 위치를 추적하는 변수를 꼭 하나 만들어 두자.
+그럼 바로.. 끔찍한 일 발생. 따라서 커서의 위치를 추적하는 변수를 꼭 하나 만들어 두자.  
 
-- Canonical 모드를 껐으므로 하나의 입력이 들어올 때 마다 각 입력에 해당하는 함수가 동작한다.
+- Canonical 모드를 껐으므로 하나의 입력이 들어올 때 마다 각 입력에 해당하는 함수가 동작한다.  
   ```
   - 새로운 문자를 추가하는 함수(Insert)
     - command line의 끝
@@ -54,7 +56,8 @@ read가 끝난다. 그리고 입력이 끝나면 그제서야 buf에 입력이 �
   - Command History navigating
   - Signal
   - Ctrl + d (End Of Transmission)
-  ```
+  ```  
+  
 - 모든 입력들은 ***커서가 움직인다*** 라는 하나의 공통점을 갖는다. 따라서 아래와 같은 방법으로 함수를 만들면 좋을거 같다.(나는 멍청해서 이렇게 안했다..)
   - 커서의 위치를 추적하는 변수 두 개 선언.
     - ex_cursor_pos
@@ -68,9 +71,15 @@ read가 끝난다. 그리고 입력이 끝나면 그제서야 buf에 입력이 �
     - ex_cursor_pos < cur_cursor_pos
   - :heavy_exclamation_mark: ***커서가 다음 줄 또는 이전 줄로 넘어가는 경우 주의하자.***  
 
-- Signal을 minishell의 main에도 설치하고 get_line 함수에도 따로 설치하자.
-- man termcap, man terminfo 등을 해보면 capability 뭐시기 뭐시기 말이 많다. capability는 기능이라고 생각하면 된다.
-이 녀석들을 tputs, tgetstr 등의 함수들을 이용해서 터미널을 조작할 수 있다. 몇 가지 예를 살펴보면
+- Signal을 minishell의 main에도 설치하고 get_line 함수에도 따로 설치하자.  
+
+- terminal을 다루기 위해서는 Capability를 이용해야한다. Capability는 세 종류가 있다. (man termcap, man terminfo, [gnu 문서](https://www.gnu.org/software/termutils/manual/termcap-1.3/html_node/termcap_5.html))
+  - Boolean   -> int tgetnum(char \*name)
+  - Numeric   -> int tgetflag(char \*name)
+  - String    -> char \*tgetstr(char \*name)
+- -> 뒤에 있는 함수들은 각 Capability를 사용하기 위한 함수다. 인자로 알맞은 Capability를 넣어주면 된다.  
+
+- 아래는 내가 사용한 String Capability 종류와 사용 예. (참고로 나는 String 만 사용했다. 영어 해석이 잘 안되서,,,)
   ```    
     nd : 커서를 오른쪽으로 움직인다.
     le : 커서를 왼쪽으로 움직인다.
@@ -84,6 +93,13 @@ read가 끝난다. 그리고 입력이 끝나면 그제서야 buf에 입력이 �
     ===============================================
     사용 예시
     ***********************************************
-    tputs(tgetstr(nd, NULL), 1, &ft_putchar_fd);
+    tputs(tgetstr(nd, NULL), 1, &ft_putchar_fd); // 커서를 오른쪽으로 움직임
     ***********************************************
+    char \*tgetstr(char \*name)함수는 뭔가를 가져온다! 라는 느낌이고
+    가져오는걸 쓰는 함수는 tputs인듯. 정확히는 모르겠다.
+    
+    나는 string만 사용했는데, Numeric에도 쓸만한 Capability가 보인다.
+    "co"는 눈에 보이는 커서의 Numbers of Col을 return 하는것 같다. 아래 처럼 쓰면 될듯.
+        int cur_col = tgetnum("co");
+    Boolean에는 "hc"가 있는데 설명에 hardcopy라고 써있다. copy를 해주는 녀석일까? 나중에 알아보자.
   ```
