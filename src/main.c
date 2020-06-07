@@ -6,7 +6,7 @@
 /*   By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:50:17 by gmoon             #+#    #+#             */
-/*   Updated: 2020/06/06 01:35:15 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/07 22:52:06 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ char	*make_prompt(void)
 
 	cwd = getcwd(0, 1024);
 	curr = ft_strrchr(cwd, '/') + 1;
-	prompt = ft_strjoin("\033[36m\033[3m\033[01m", curr);
-	prompt = ft_strjoin_s1free(prompt, " >> ");
-	prompt = ft_strjoin_s1free(prompt, "\033[0m");
+	prompt = ft_strjoin(curr, " >> ");
 	free(cwd);
 	return (prompt);
 	
@@ -32,22 +30,22 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_list	*envs;
 	t_dlist *history;
-	char	*line;
 	int		wstatus;
 	char	*prompt;
 
+	g_line = 0;
 	wstatus = 0;
-	g_core = getpid();
 	init_shell(argc, argv, envp, &envs);
-	signal(SIGINT, sigint_handle);
 	signal(SIGQUIT, sigquit_handle);
 	history = 0;
 	while (1)
 	{
 		prompt = make_prompt();
-		line = get_line_term(prompt, &history);
+		g_line = get_line_term(prompt, &history);
 		wstatus = 0;
-		exec_line(line, envs, envp, &wstatus);
+		signal(SIGINT, sigint_handle);
+		signal(SIGQUIT, sigquit_handle);
+		exec_line(g_line, envs, envp, &wstatus);
 		free(prompt);
 	}
 }
