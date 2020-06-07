@@ -6,7 +6,7 @@
 /*   By: sanam <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/29 15:38:24 by sanam             #+#    #+#             */
-/*   Updated: 2020/06/06 00:37:22 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/08 01:41:30 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ t_dlist		*search_up(t_line *data, t_dlist *history)
 		free(data->line);
 		data->line = ft_strjoin(data->prompt, history->content);
 		ft_tputs("dl");
-		ft_putstr_fd(data->line, 1);
+		ft_putstr_fd("\033[36m\033[3m\033[01m", 1);
+		ft_putstr_fd(data->prompt, 1);
+		ft_putstr_fd("\033[0m", 1);
+		ft_putstr_fd(history->content, 1);
 		data->cursor_pos = ft_strlen(data->line);
 		if (history->next)
 			history = history->next;
@@ -54,7 +57,10 @@ t_dlist		*search_down(t_line *data, t_dlist *history)
 		free(data->line);
 		data->line = ft_strjoin(data->prompt, history->content);
 		ft_tputs("dl");
-		ft_putstr_fd(data->line, 1);
+		ft_putstr_fd("\033[36m\033[3m\033[01m", 1);
+		ft_putstr_fd(data->prompt, 1);
+		ft_putstr_fd("\033[0m", 1);
+		ft_putstr_fd(history->content, 1);
 		data->cursor_pos = ft_strlen(data->line);
 		return (history);
 	}
