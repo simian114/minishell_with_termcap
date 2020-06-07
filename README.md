@@ -38,6 +38,7 @@
 -----
 ### BUG
 - 입력줄 중간으로 커서 옮긴 후 입력 쫙 하면 다음 줄로 넘어갈 때 심각한 오류 발생
+- **Ctrl + :arrow_up:, :DOWN:** 에 문제 있는듯..
 
 -----
 ### :heavy_exclamation_mark: termcap과 get_line
