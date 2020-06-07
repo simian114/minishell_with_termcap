@@ -6,7 +6,7 @@
 /*   By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/10 18:29:52 by gmoon             #+#    #+#             */
-/*   Updated: 2020/06/06 01:35:53 by sanam            ###   ########.fr       */
+/*   Updated: 2020/06/07 22:50:41 by sanam            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ typedef struct	s_env
 	char		*value;
 }				t_env;
 
-int				g_core;
-int				g_option;
+char			*g_line;
+//t_dlist			*history;
+//int				g_core;
+//int				g_option;
 
 /*
 ** builtins
@@ -46,6 +48,8 @@ void			sh_pwd(char **args, int fd);
 void			sh_unset(char **args, t_list *envs);
 int				sh_exit(char **cmd);
 
+
+char	*make_prompt(void);
 /*
 ** init_shell.c
 */
