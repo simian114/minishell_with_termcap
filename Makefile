@@ -6,7 +6,7 @@
 #    By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/11 21:00:54 by gmoon             #+#    #+#              #
-#    Updated: 2020/06/06 01:36:12 by sanam            ###   ########.fr        #
+#    Updated: 2020/06/07 22:51:46 by sanam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,9 +24,7 @@ SRC =	check_redirection.c	\
 		get_args.c			\
 		main.c				\
 		pipe.c				\
-		get_line.c			\
 		print_art.c			\
-		print_commandline.c	\
 		semicolon.c			\
 		signal.c			\
 		store_status.c		\
