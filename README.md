@@ -43,6 +43,13 @@
 - **Ctrl + :arrow_up:, :arrow_down:** 에 문제 있는듯..
 
 -----
+### Built-in functions?
+- built-in 함수란 쉘 자체에 내장되어 있는 함수들을 뜻한다.
+  - [bash 빌트인 명령어](https://zetawiki.com/wiki/Bash_%EB%B9%8C%ED%8A%B8%EC%9D%B8_%EB%AA%85%EB%A0%B9%EC%96%B4)
+- built-in이 아닌 함수들은 쉘 자체에 내장되어 있는것이 아닌 프로그램 형태로 존재한다. 따라서 미니쉘에서 이미 만들어져 있는 함수들을
+이용하고 싶다면 ***$PATH*** 환경변수에서 프로그램들을 찾고 실행하면 된다.
+
+-----
 ### :heavy_exclamation_mark: termcap과 get_line
 - get_line 함수를 만들 때 가장 먼저 해야하는건 현재 터미널의 width를 구하는 것. icotl 라이브러리와 함수를 이용하면 된다.  
 
