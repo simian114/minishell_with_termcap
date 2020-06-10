@@ -7,7 +7,7 @@
 
 -----
 ![Demon..](demonstration.gif)
-![flowchart](flowchart.drowio)
+![flowchart](flowchart.png)
 -----
 ### How to compile?
 - linux
