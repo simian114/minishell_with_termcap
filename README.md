@@ -15,13 +15,13 @@
 
   ```
     1. sudo apt-get install libncurses5-dev
-    2. make
+    2. git clone https://github.com/simian114/minishell_with_termcap.git ; cd minishell_with_termcap ; make
   ```
 
 - Mac
 
   ```
-    make
+    git clone https://github.com/simian114/minishell_with_termcap.git ; cd minishell_with_termcap ; make
   ```
 -----
 
