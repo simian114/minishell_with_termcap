@@ -37,6 +37,7 @@
 - ctrl + :arrow_left:
 - tab
 - Cut, Copy, Paste
+- ', "
 
 -----
 ### :bug: BUG
