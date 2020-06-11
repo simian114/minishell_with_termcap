@@ -10,7 +10,7 @@
 ![flowchart](flowchart.png)
 
 -----
-### :question: How to compile?
+### :question: How To Install?
 - linux
 
   ```
