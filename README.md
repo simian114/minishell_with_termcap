@@ -25,7 +25,7 @@
   ```
 -----
 
-### Implmented
+### :o:	Implmented
 - Move cursor Left and Right using :arrow_left:, :arrow_right:
 - Move cursor Up and down using **Ctrl + :arrow_up:, Ctrl + :arrow_down:**
 - Move cursor Home and End of the command line using **HOME, END**
@@ -33,45 +33,40 @@
 - Command history navigating using :arrow_up:, :arrow_down:
 
 -----
-### Not Implemented
+### :x: Not Implemented
 - ctrl + :arrow_left:
 - tab
 - Cut, Copy, Paste
 
 -----
-### BUG
+### :bug: BUG
 - 입력줄 중간으로 커서 옮긴 후 입력 쫙 하면 다음 줄로 넘어갈 때 심각한 오류 발생
 - **Ctrl + :arrow_up:, :arrow_down:** 에 문제 있는듯..
 
 -----
-### Built-in functions?
+### :heavy_exclamation_mark: Built-in functions?
 - built-in 함수란 쉘 자체에 내장되어 있는 함수들을 뜻한다.
   - [bash 빌트인 명령어](https://zetawiki.com/wiki/Bash_%EB%B9%8C%ED%8A%B8%EC%9D%B8_%EB%AA%85%EB%A0%B9%EC%96%B4)
 - built-in이 아닌 함수들은 쉘 자체에 내장되어 있는것이 아닌 프로그램 형태로 존재한다. 따라서 미니쉘에서 이미 만들어져 있는 함수들을
 이용하고 싶다면 ***$PATH*** 환경변수에서 프로그램들을 찾고 실행하면 된다.
 
 -----
-### SIGNAL
-- 시그널은 신호를 보낸다고 생각하면 된다. 포인터 연산이나 할당되지 않은 메모리에 접근하면 SIGSEGV나 SIGABRT 등의 시그널이 발생하고 프로그램이 종료되듯이 minishell에서는 ***Ctrl + c 나 Ctrl + \\*** 사용자가 직접 쉘에 시그널을 보내는거다.  
-
-- 보통 쉘에서 어떤 프로그램을 실행시키고 프로그램이 끝나기 전에 강제로 종료할 때 우리는 Ctrl + c, Ctrl + \, Ctrl + d 를 연타한다. 이게 작동하는 이유는 그 키를 누름으로써 발생하는 시그널의 기본 동작이 프로세스를 종료하는것이기 때문이다.(Ctrl + d 는 약간 다름..)  
-
-- Ctrl + c ==> SIGINT, Ctrl + \\ ==> SIGQUIT
-  - 위에서 말했다시피 SIGINT 와 SIGQUIT 는 기본 동작이 프로세스를 종료하는거다. 만약 minishell에서 기본 동작을 수행하게 한다면
-  시그널을 발생시키는 순간 바로 minishell 프로세스가 종료되는 끔찍한 일이 발생할것이다. 그러면 어떻게 해야하지?
+### :heavy_exclamation_mark: SIGNAL
+- 시그널은 신호를 보낸다고 생각하면 된다. 포인터 연산이나 할당되지 않은 메모리에 접근하면 SIGSEGV나 SIGABRT 등의 시그널이 발생하고 프로그램이 종료되듯이 minishell에서는 ***Ctrl + c 나 Ctrl + \\*** 를 눌러서 직접 시그널을 보내고 시그널이 보내졌을 때 그에 맞는 함수(핸들러)를 실행해야한다.  
   
-- 시그널이 발생하면 그 시그널에 맞는 함수를 실행시키게 만든다!
-  - SIGINT
-    - bash 입력 단계에서 SIGINT 를 발생시키면 입력줄이 다음 줄로 넘어간다.
-    - 어떤 명령이 실행 중일 때 SIGINT를 발생시키면 프로그램이 종료된다.
-  - SIGQUIT
-    - bash 입력 단계에서 SIGQUIT를 발생시키면 아무런 일도 일어나지 않는다.
-    - 어떤 명령이 실행 중일 때 SIGQUIT를 발생시키면 CORE DUMP를 남기고(?) 종료된다.
-- 위의 경우를 보면 SIGINT나 SIQUIT나 각각이 두 개의 상황을 갖게 되므로 각각이 두 개의 함수로 만들면 된다.
-- 일단 첫 번째 경우는 get_line 단계에서 처리를 해야하므로 get_line 함수 안에서 signal을 처리해주자.
-- 두 번째 경우는 어떤 명령이 실행 중일 때, 즉 새로운 프로세스가 생성됐을 때 이므로 get_line 함수 이후에 여기에 맞는
-핸들러를 만들면 된다.  
+- 시그널이 발생하면 그 시그널에 맞는 함수를 실행시키게 만든다! (함수를 따로 만들지 않으면 기본 동작으로 ***프로세스가 종료됨***  
 
+- SIGINT
+  - bash 입력 단계에서 SIGINT 를 발생시키면 입력줄이 다음 줄로 넘어간다.
+  - 어떤 명령이 실행 중일 때 SIGINT를 발생시키면 프로그램이 종료된다. (자식 프로세스가 종료 된다.)  
+- SIGQUIT
+  - bash 입력 단계에서 SIGQUIT를 발생시키면 아무런 일도 일어나지 않는다.
+  - 어떤 명령이 실행 중일 때 SIGQUIT를 발생시키면 CORE DUMP를 남기고(?) 종료된다. (자식 프로세스가 종료 된다.)  
+
+- 핸들러 만들기
+  - 두 시그널 모두 첫 번째 경우는 get_line 단계에서 처리를 해주면 되고 두 번째 경우는 명령 실행 단계에서 시그널을 처리해 주면 된다.  
+  - 시그널은 함수를 설치하는 느낌(?)이므로 get_line 단계에서 하나 설치하고 get_line이 끝난 다음에 하나 더 설치하면 된다.  
+  
 -----
 ### :heavy_exclamation_mark: termcap과 get_line
 - get_line 함수를 만들 때 가장 먼저 해야하는건 현재 터미널의 width를 구하는 것. icotl 라이브러리와 함수를 이용하면 된다.  
