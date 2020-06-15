@@ -38,6 +38,7 @@
 - tab
 - Cut, Copy, Paste
 - ', "
+- Escaping
 
 -----
 ### :bug: BUG
