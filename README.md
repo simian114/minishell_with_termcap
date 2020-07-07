@@ -26,7 +26,8 @@
 - Windows
 
   ```
-    1. docker 설치 & [minishell image](https://github.com/simian114/Dockerizing) 클론
+    1. docker install
+    2. git clone https://github.com/simian114/Dockerizing ; cd Dockerizing/minishell
     2. docker build -t minishell .
     3. docker run -it minishell ./minishell
 -----
