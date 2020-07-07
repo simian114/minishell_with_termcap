@@ -23,6 +23,12 @@
   ```
     git clone https://github.com/simian114/minishell_with_termcap.git ; cd minishell_with_termcap ; make
   ```
+- Windows
+
+  ```
+    1. docker 설치 & [minishell image](https://github.com/simian114/Dockerizing) 클론
+    2. docker build -t minishell .
+    3. docker run -it minishell ./minishell
 -----
 
 ### :o:	Implmented
