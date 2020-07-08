@@ -6,7 +6,7 @@
 #    By: gmoon <gmoon@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/11 21:00:54 by gmoon             #+#    #+#              #
-#    Updated: 2020/06/10 18:40:26 by sanam            ###   ########.fr        #
+#    Updated: 2020/07/08 12:15:00 by sanam            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,37 +55,42 @@ FT_LNK = -L $(FTDIR) -l ft -ltermcap
 all: obj $(FT_LIB) $(NAME)
 
 obj:
-	mkdir -p $(OBJDIR)
-	mkdir -p $(OBJDIR)/builtin
+	@mkdir -p $(OBJDIR) > /dev/null
+	@mkdir -p $(OBJDIR)/builtin  > /dev/null
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
-	$(CC) $(CFLAGS) $(FT_INC) -I $(INCDIR) -o $@ -c $<
+	@$(CC) $(CFLAGS) $(FT_INC) -I $(INCDIR) -o $@ -c $<
 
 $(FT_LIB):
-	make -C $(FTDIR)
+	@echo "Making FT library..."
+	@make -C $(FTDIR) > /dev/null
 
 $(NAME): $(OBJ)
-	$(CC) $(OBJ) $(FT_LNK) -o $(NAME)
+	@echo "Making MINISHELL..."
+	@$(CC) $(OBJ) $(FT_LNK) -o $(NAME)
+	@echo "FIN! Now you can use MINISHELL!"
 
 bonus: $(NAME)
 
 clean:
-	rm -rf $(OBJDIR)
-	make -C $(FTDIR) clean
+	@rm -rf $(OBJDIR)
+	@make -C $(FTDIR) clean > /dev/null
 
 fclean: clean
-	rm -f $(NAME)
-	make -C $(FTDIR) fclean
+	@rm -f $(NAME)
+	@make -C $(FTDIR) fclean > /dev/null
 
 re: fclean all
 
 run	:
-	make
-	./minishell
-	make fclean
+	@make
+	@echo "Executing MINISHELL!"
+	@./minishell
+	@make fclean
 
 val:
-	make
+	@make
+	@echo "Memory check using Valgrind!"
 	@valgrind --leak-check=full ./minishell
 
 .PHONY : all bonus clean fclean re run

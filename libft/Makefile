@@ -24,17 +24,17 @@ OBJS = $(SRCS:.c=.o)
 INCS = .
 
 $(NAME): $(OBJS)
-	ar -rcs $@ $(OBJS)
+	@ar -rcs $@ $(OBJS)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I $(INCS)
+	@$(CC) $(CFLAGS) -c $< -o $(<:.c=.o) -I $(INCS)
 
 all: $(NAME)
 
 clean:
-	rm -f $(OBJS)
+	@rm -f $(OBJS)
 
 fclean:	clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
